@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pms.mapper.VehicleMapper">
+	<resultMap id="BaseResultMap" type="Vehicle">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="vehicleNum" property="vehicleNum" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="DATE" />
+		<result column="updateTime" property="updateTime" jdbcType="DATE" />
+		<result column="deleteTime" property="deleteTime" jdbcType="DATE" />
+		<result column="delFlag" property="delFlag" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, vehicleNum, createTime, updateTime,deleteTime,delFlag
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from Vehicle
+		where delFlag = 0
+		and id = #{id,jdbcType=VARCHAR}
+	</select>
+	<update id="deleteByPrimaryKey" parameterType="String">
+		update
+		Vehicle
+		set
+		delFlag=1
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<insert id="insert" parameterType="Vehicle">
+		insert into Vehicle (
+		id,
+		vehicleNum,
+		createTime)
+		values (
+		#{id,jdbcType=VARCHAR},
+		#{vehicleNum,jdbcType=VARCHAR},
+		#{createTime,jdbcType=DATE}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="Vehicle">
+		insert into Vehicle
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="vehicleNum != null">
+				vehicleNum,
+			</if>
+			<if test="createTime != null">
+				createTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="vehicleNum != null">
+				#{vehicleNum,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="Vehicle">
+		update Vehicle
+		<set>
+			<if test="vehicleNum != null">
+				vehicleNum = #{vehicleNum,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime,jdbcType=DATE},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="Vehicle">
+		update Vehicle
+		set
+		vehicleNum = #{vehicleNum,jdbcType=VARCHAR},
+		updateTime =
+		#{updateTime,jdbcType=DATE}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<select id="select" resultMap="BaseResultMap" parameterType="Map">
+		select
+		<include refid="Base_Column_List" />
+		from Vehicle
+		<where>
+			delFlag = 0
+			<if test="id !=null">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+
+
+</mapper>
