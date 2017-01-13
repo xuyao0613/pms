@@ -22,11 +22,12 @@ public class DoSthWithMsg2 implements Runnable {
 				// 2秒内取不到就退出
 				String msg = blockingQueue.poll(2, TimeUnit.MILLISECONDS);
 				if (StringUtils.isBlank(msg)) {
+					TimeUnit.MILLISECONDS.sleep(500);
 					continue;
 				}
 				System.out.println("do sth with msg 2 :" + msg);
 				// 休息0.5秒
-				Thread.sleep(500);
+//				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

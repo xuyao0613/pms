@@ -63,11 +63,11 @@ public class MessageSend2 {
 					@Override
 					public void run() {
 						while (true) {
-							try {
-								Thread.sleep(500);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
+//							try {
+//								Thread.sleep(500);
+//							} catch (InterruptedException e1) {
+//								e1.printStackTrace();
+//							}
 							try {
 								sendMessage(session, messageProducer);
 							} catch (Exception e) {
@@ -102,11 +102,11 @@ public class MessageSend2 {
 		// 通过消息生产者发出消息
 		messageProducer.send(message);
 		// session.commit();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e1) {
+//			e1.printStackTrace();
+//		}
 		// }
 
 	}

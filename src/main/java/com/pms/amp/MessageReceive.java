@@ -49,7 +49,7 @@ public class MessageReceive {
 			service.execute(new DoSthWithMsg1(blockingQueue));
 			service.execute(new DoSthWithMsg2(blockingQueue));
 			while (true) {
-				TextMessage textMessage = (TextMessage) messageConsumer.receive(100000);
+				TextMessage textMessage = (TextMessage) messageConsumer.receive(1000);
 				if (textMessage != null) {
 					try {
 						blockingQueue.put("收到的消息:" + textMessage.getText());
