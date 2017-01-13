@@ -9,7 +9,9 @@ import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
@@ -33,7 +35,7 @@ public class MessageReceive {
 		// 实例化连接工厂
 		connectionFactory = new ActiveMQConnectionFactory(MessageReceive.USERNAME, MessageReceive.PASSWORD,
 				MessageReceive.BROKEURL);
-		BlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>();
+		final BlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>();
 		ExecutorService service = Executors.newFixedThreadPool(2);
 		try {
 			// 通过连接工厂获取连接
@@ -48,19 +50,23 @@ public class MessageReceive {
 			messageConsumer = session.createConsumer(destination);
 			service.execute(new DoSthWithMsg1(blockingQueue));
 			service.execute(new DoSthWithMsg2(blockingQueue));
-			while (true) {
-				TextMessage textMessage = (TextMessage) messageConsumer.receive(1000);
-				if (textMessage != null) {
-					try {
-						blockingQueue.put("收到的消息:" + textMessage.getText());
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 
-				} else {
-					break;
+			messageConsumer.setMessageListener(new MessageListener() {
+
+				@Override
+				public void onMessage(Message message) {
+					if (message instanceof TextMessage) {
+						TextMessage textMessage = (TextMessage) message;
+						try {
+							blockingQueue.put("收到的消息:" + textMessage.getText());
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						} catch (JMSException e) {
+							e.printStackTrace();
+						}
+					}
 				}
-			}
+			});
 
 		} catch (JMSException e) {
 			e.printStackTrace();
