@@ -43,7 +43,7 @@ public class MessageReceive {
 			// 启动连接
 			connection.start();
 			// 创建session
-			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 			// 创建一个连接HelloWorld的消息队列
 			destination = session.createQueue("HelloWorld");
 			// 创建消息消费者
@@ -57,7 +57,10 @@ public class MessageReceive {
 				public void onMessage(Message message) {
 					if (message instanceof TextMessage) {
 						TextMessage textMessage = (TextMessage) message;
+
 						try {
+							//收到签收，另起一个线程，通知mq服务已经签收
+							message.acknowledge();
 							blockingQueue.put("收到的消息:" + textMessage.getText());
 						} catch (InterruptedException e) {
 							e.printStackTrace();

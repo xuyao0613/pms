@@ -14,15 +14,9 @@
 	<bean
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
 	</bean>
-	<!-- <bean
-		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-		<property name="messageConverters">
-			<list>
-				<bean
-					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
-			</list>
-		</property>
-	</bean> -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"> 
+		<property name="messageConverters"> <list> <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" 
+		/> </list> </property> </bean> -->
 	<mvc:default-servlet-handler />
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
@@ -42,8 +36,6 @@
 			</props>
 		</property>
 	</bean>
-
-
 
 	<bean
 		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
@@ -66,11 +58,5 @@
 		</property>
 	</bean>
 
-	<!--必须在RequestMappingHandlerAdapter之后 -->
-	<!-- <mvc:annotation-driven></mvc:annotation-driven> -->
 
-
-
-
-	<!-- <import resource="spring-config-export.xml" /> -->
 </beans>

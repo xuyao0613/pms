@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
@@ -35,7 +36,7 @@ public class MessageSend2 {
 		// 会话 接受或者发送消息的线程
 		final Session session;
 		// 消息的目的地
-		Destination destination;
+		final Destination destination;
 		// 消息生产者
 		final MessageProducer messageProducer;
 		// 实例化连接工厂
@@ -54,7 +55,7 @@ public class MessageSend2 {
 			// 创建一个名称为HelloWorld的消息队列
 			destination = session.createQueue("HelloWorld");
 			// 创建消息生产者
-			messageProducer = session.createProducer(destination);
+			messageProducer = session.createProducer(null);
 			// 发送消息
 			//
 
@@ -63,13 +64,13 @@ public class MessageSend2 {
 					@Override
 					public void run() {
 						while (true) {
-//							try {
-//								Thread.sleep(500);
-//							} catch (InterruptedException e1) {
-//								e1.printStackTrace();
-//							}
+							// try {
+							// Thread.sleep(500);
+							// } catch (InterruptedException e1) {
+							// e1.printStackTrace();
+							// }
 							try {
-								sendMessage(session, messageProducer);
+								sendMessage(destination,session, messageProducer);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -94,19 +95,19 @@ public class MessageSend2 {
 		}
 	}
 
-	public static synchronized void sendMessage(Session session, MessageProducer messageProducer) throws Exception {
+	public synchronized static void sendMessage(Destination destination,Session session, MessageProducer messageProducer) throws Exception {
 		// for (int i = 0; i < Producer2.SENDNUM; i++) {
 		// 创建一条文本消息
 		TextMessage message = session.createTextMessage("ActiveMQ 发送消息" + aInt.incrementAndGet());
 		System.out.println("发送消息：Activemq 发送消息");
 		// 通过消息生产者发出消息
-		messageProducer.send(message);
+		messageProducer.send(destination, message, DeliveryMode.NON_PERSISTENT, 4, 4000);
 		// session.commit();
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e1) {
-//			e1.printStackTrace();
-//		}
+		// try {
+		// Thread.sleep(1000);
+		// } catch (InterruptedException e1) {
+		// e1.printStackTrace();
+		// }
 		// }
 
 	}
