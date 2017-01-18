@@ -37,6 +37,7 @@
         <constructor-arg ref="connectionFactory" />
         <!-- 非pub/sub模型（发布/订阅），即队列模式 -->
         <property name="pubSubDomain" value="false" />
+        <property name="defaultDestinationName" value="test.queue"/>
     </bean>
 
     <!-- 定义JmsTemplate的Topic类型 -->
@@ -45,11 +46,12 @@
         <constructor-arg ref="connectionFactory" />
         <!-- pub/sub模型（发布/订阅） -->
         <property name="pubSubDomain" value="true" />
+        <property name="defaultDestinationName" value="test.topic"/>
     </bean>
 
     <!--Spring JmsTemplate 的消息生产者 end-->
 
-
+	
     <!-- 消息消费者 start-->
 
     <!-- 定义Queue监听器 -->
