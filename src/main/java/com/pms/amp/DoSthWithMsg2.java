@@ -13,7 +13,7 @@ public class DoSthWithMsg2 implements Runnable {
 		this.blockingQueue = _blockingQueue;
 	}
 
-	private boolean isRunning = true;
+	private volatile boolean isRunning = true;
 
 	@Override
 	public void run() {
@@ -27,7 +27,7 @@ public class DoSthWithMsg2 implements Runnable {
 				}
 				System.out.println("do sth with msg 2 :" + msg);
 				// 休息0.5秒
-//				Thread.sleep(500);
+				// Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
